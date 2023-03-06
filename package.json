@@ -1,5 +1,5 @@
 {
-  "name": "md-links",
+  "name": "md-links-asc",
   "version": "0.1.0",
   "engines": {
     "node": ">=16.x"
@@ -8,5 +8,31 @@
     "createdAt": "2023-02-07T18:15:01.196Z",
     "version": "5.5.0",
     "commit": "a63a770ea33332882790401851df337734b0b734"
+  },
+  "description": "Programa para validar links en archivos con extensión md",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alesantoscoz/DEV003-md-links.git"
+  },
+  "keywords": [
+    "http",
+    "markdown",
+    "links"
+  ],
+  "author": "AleSantosCoz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alesantoscoz/DEV003-md-links/issues"
+  },
+  "homepage": "https://github.com/alesantoscoz/DEV003-md-links#readme",
+  "devDependencies": {
+    "jest": "^29.5.0"
   }
 }
