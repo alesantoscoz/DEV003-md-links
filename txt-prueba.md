@@ -1,1 +1,1 @@
-Hola, soy un archivo de texto (:
+Hola, soy un archivo de texto de extensión md (:

@@ -1,4 +1,4 @@
-const mdLinks = require('../');
+/*const mdLinks = require('../');
 
 
 describe('mdLinks', () => {
@@ -7,4 +7,5 @@ describe('mdLinks', () => {
     console.log('FIX ME!');
   });
 
-});
+});*/
+

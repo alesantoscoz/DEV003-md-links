@@ -34,5 +34,8 @@
   "homepage": "https://github.com/alesantoscoz/DEV003-md-links#readme",
   "devDependencies": {
     "jest": "^29.5.0"
+  },
+  "dependencies": {
+    "eslint": "^8.35.0"
   }
 }
