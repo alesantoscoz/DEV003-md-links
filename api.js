@@ -1,6 +1,6 @@
 const fs = require('fs'); //file system
 const path = require('path'); //dirección (ruta)
-const direc = './README.md' ;// direccion de prueba
+const direc = 'C:/Users/51940/Desktop/LABORATORIA/PROYECTO_4/DEV003-md-links/carpeta' ;// direccion de prueba
 
 const validPath = (direc) => fs.existsSync(direc); //validar que la dirección existe
 const isAbs = (direc) => path.isAbsolute(direc);//validar si es absoluta o relativa
@@ -40,25 +40,25 @@ function readingPath(direc) {
         return 'La ruta ingresada no existe. Por favor ingresa una ruta válida.'
 };
 
-const readingFile = (direc) => fs.readFileSync(direc, 'utf8');
+//const readingFile = (direc) => fs.readFileSync(direc, 'utf8');
 //console.log(readingFile(direc))
 
-/*let arrFiles = [];
+let arrFiles = [];
 //consiguiendo array de archivos de una carpeta
-function getFiles(){
-    if(isFile(direc)){ //si es file
-        return arrFiles.push(direc); //se agrega directamente la ruta al array
-    }
-    else { //si es directorio se lee el directorio primero
+function getFiles(direc){
+    if(!isFile(direc)){ //si es folder
         readDir(direc).forEach((file) => { 
-          arrFiles.push(path.join(__dirname,file));
-           //arrFiles = [...arrFiles, ...(getFiles(path.join(pathAbs,file)))];
-        });
-        return arrFiles;
+            const folder = direc+'/'+file;
+            //recursividad, vuelvo a llamar a la función para que lea cada folder hasta un archivo
+            getFiles(folder); 
+          });
     }
+    else { //si es un file se agrega al array
+        return arrFiles.push(path.join(direc)); //se agrega directamente la ruta al array
+    };
 };
-getFiles()
-console.log(arrFiles);
+getFiles(direc);
+//console.log(arrFiles);
 
 function getmdFiles(){
     return arrFiles.filter((file=>extMd(file)));
@@ -66,21 +66,6 @@ function getmdFiles(){
 
 console.log(getmdFiles(direc));
 
-let arrFilesOnly =[] ;
-
-const filtFiles = (direc) => {
-    readDir(direc).forEach(folder => {
-        if (isDirectory(folder)) {
-            filtFiles(folder);
-        } else if (isFile(direc)) {
-            arrFilesOnly.push(path.join(__dirname,direc));
-        }
-        return arrFilesOnly;
-    });
-};
-
-filtFiles(direc);
-console.log(arrFilesOnly);*/
 
 function getLinks(){ //función para generar array con links
     const regex = /\[(.+)\]\((https?:\/\/\w+.+)\)/g; //expresión regular para identificar páginas web (preguntar si está ok)
@@ -88,15 +73,15 @@ function getLinks(){ //función para generar array con links
     //match devuelve las coincidencias con la expresión regular (regex)
 };
 
-getLinks(direc)
-console.log(arrLinks)
+//getLinks(direc)
+//console.log(arrLinks)
 
 //crear arreglo href text file
-let arrObjetc=[];
+/*let arrObjetc=[];
 function getOb(){
     for (let i = 0; i < arrLinks.length; i++){
         arrObjetc.push({
-            href: arrLinks[i],
+            href: arrLinks[i], //.split('](')
             text: arrLinks[i], //preguntar
             file: turningAbs(direc)
         });
@@ -104,7 +89,7 @@ function getOb(){
     return arrObjetc;
 };
 getOb(direc);
-console.log(arrObjetc);
+console.log(arrObjetc);*/
 
 
 //console.log(mifuncion(x))
