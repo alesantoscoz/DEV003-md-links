@@ -1,6 +1,6 @@
 const fs = require('fs'); //file system
 const path = require('path'); //dirección (ruta)
-const direc = 'C:/Users/51940/Desktop/LABORATORIA/PROYECTO_4/DEV003-md-links/README.md' ;// direccion de prueba
+const direc = 'C:/Users/51940/Desktop/LABORATORIA/PROYECTO_4/DEV003-md-links/carpeta' ;// direccion de prueba
 
 const validPath = (direc) => fs.existsSync(direc); //validar que la dirección existe
 const isAbs = (direc) => path.isAbsolute(direc);//validar si es absoluta o relativa
@@ -43,9 +43,9 @@ function readingPath(direc) {
 const readingFile = (direc) => fs.readFileSync(direc, 'utf8');
 //console.log(readingFile(direc))
 
-//let arrFiles = [];
+let arrFiles = [];
 //consiguiendo array de archivos de una carpeta
-/*function getFiles(direc){
+function getFiles(direc){
     if(!isFile(direc)){ //si es folder
         readDir(direc).forEach((file) => { 
             const folder = direc+'/'+file;
@@ -57,24 +57,40 @@ const readingFile = (direc) => fs.readFileSync(direc, 'utf8');
         return arrFiles.push(path.join(direc)); //se agrega directamente la ruta al array
     };
 };
-getFiles(direc);*/
+getFiles(direc);
 //console.log(arrFiles);
 
-/*function getmdFiles(){
-    return arrFiles.filter((file=>extMd(file)));
+let arrmdFiles = [];
+
+function getmdFiles(){
+    arrmdFiles = arrFiles.filter((file=>extMd(file)));
+    return arrmdFiles
 };
 
-console.log(getmdFiles(direc));*/
+console.log(getmdFiles(direc));
 
-
-function getLinks(){ //función para generar array con links
-    const regex = /\[(.+)\]\((https?:\/\/\w+.+)\)/g; //expresión regular para identificar páginas web (preguntar si está ok)
-    return arrLinks = (readingFile(direc).match(regex)); //crea un array con los links del archivo después de leerlo
-    //match devuelve las coincidencias con la expresión regular (regex)
+function getLinks(direc, arrLinks=[]){
+    if(isDirectory(direc)){ //si es folder
+        readDir(direc).forEach((file) => { 
+            const folder = direc+'/'+file;
+            //recursividad, vuelvo a llamar a la función para que lea cada folder hasta un archivo
+            getLinks(folder,arrLinks); 
+          });
+          return arrLinks;
+    }
+    else { //si es un file se agrega al array
+        const regex = /\[(.+)\]\((https?:\/\/\w+.+)\)/g; //expresión regular para identificar páginas web (preguntar si está ok)
+        const links = (readingFile(direc).match(regex));
+        if(links!=null){ // sólo agregaremos los archivos que tengan links
+            arrLinks.push(...(readingFile(direc).match(regex))); //crea un array con los links del archivo después de leerlo
+            //match devuelve las coincidencias con la expresión regular (regex)
+            //los tres puntos son para que netamente se sumen los objetos del array y no un array dentro de otro
+        }
+        return arrLinks;
+    };
 };
 
-getLinks(direc)
-console.log(arrLinks)
+const arrLinks = getLinks(direc)
 
 //crear arreglo href text file
 let arrObjetc=[];
@@ -82,7 +98,7 @@ function getOb(){
     for (let i = 0; i < arrLinks.length; i++){
         arrObjetc.push({
             href: arrLinks[i].slice(arrLinks[i].indexOf('](')+2, -1),
-            text: arrLinks[i].slice(1, arrLinks[i].indexOf('](')), //preguntar
+            text: arrLinks[i].slice(1, arrLinks[i].indexOf('](')),
             file: turningAbs(direc)
         });
     };
@@ -90,7 +106,6 @@ function getOb(){
 };
 getOb(direc);
 console.log(arrObjetc);
-
 
 //console.log(mifuncion(x))
 

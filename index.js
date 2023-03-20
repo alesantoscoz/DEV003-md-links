@@ -13,7 +13,7 @@ function mdLinks(path){
   });
 }
 
-//.then( (resultado)=> { ...} )
+//.then( (resultado)=> { ... } )
 //console.log(mdLinks(path));
 //mdLinks(path).then(console.log).catch(console.error);
 
