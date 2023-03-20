@@ -1,6 +1,6 @@
 const fs = require('fs'); //file system
 const path = require('path'); //dirección (ruta)
-const direc = 'C:/Users/51940/Desktop/LABORATORIA/PROYECTO_4/DEV003-md-links/carpeta' ;// direccion de prueba
+const direc = 'C:/Users/51940/Desktop/LABORATORIA/PROYECTO_4/DEV003-md-links/README.md' ;// direccion de prueba
 
 const validPath = (direc) => fs.existsSync(direc); //validar que la dirección existe
 const isAbs = (direc) => path.isAbsolute(direc);//validar si es absoluta o relativa
@@ -40,12 +40,12 @@ function readingPath(direc) {
         return 'La ruta ingresada no existe. Por favor ingresa una ruta válida.'
 };
 
-//const readingFile = (direc) => fs.readFileSync(direc, 'utf8');
+const readingFile = (direc) => fs.readFileSync(direc, 'utf8');
 //console.log(readingFile(direc))
 
-let arrFiles = [];
+//let arrFiles = [];
 //consiguiendo array de archivos de una carpeta
-function getFiles(direc){
+/*function getFiles(direc){
     if(!isFile(direc)){ //si es folder
         readDir(direc).forEach((file) => { 
             const folder = direc+'/'+file;
@@ -57,14 +57,14 @@ function getFiles(direc){
         return arrFiles.push(path.join(direc)); //se agrega directamente la ruta al array
     };
 };
-getFiles(direc);
+getFiles(direc);*/
 //console.log(arrFiles);
 
-function getmdFiles(){
+/*function getmdFiles(){
     return arrFiles.filter((file=>extMd(file)));
 };
 
-console.log(getmdFiles(direc));
+console.log(getmdFiles(direc));*/
 
 
 function getLinks(){ //función para generar array con links
@@ -73,23 +73,23 @@ function getLinks(){ //función para generar array con links
     //match devuelve las coincidencias con la expresión regular (regex)
 };
 
-//getLinks(direc)
-//console.log(arrLinks)
+getLinks(direc)
+console.log(arrLinks)
 
 //crear arreglo href text file
-/*let arrObjetc=[];
+let arrObjetc=[];
 function getOb(){
     for (let i = 0; i < arrLinks.length; i++){
         arrObjetc.push({
-            href: arrLinks[i], //.split('](')
-            text: arrLinks[i], //preguntar
+            href: arrLinks[i].slice(arrLinks[i].indexOf('](')+2, -1),
+            text: arrLinks[i].slice(1, arrLinks[i].indexOf('](')), //preguntar
             file: turningAbs(direc)
         });
     };
     return arrObjetc;
 };
 getOb(direc);
-console.log(arrObjetc);*/
+console.log(arrObjetc);
 
 
 //console.log(mifuncion(x))
