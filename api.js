@@ -1,6 +1,6 @@
 const fs = require('fs'); //file system
 const path = require('path'); //dirección (ruta)
-const direc = 'C:/Users/51940/Desktop/LABORATORIA/PROYECTO_4/DEV003-md-links/carpeta' ;// direccion de prueba
+//const direc = './carpeta' ;// direccion de prueba
 
 const validPath = (direc) => fs.existsSync(direc); //validar que la dirección existe
 const isAbs = (direc) => path.isAbsolute(direc);//validar si es absoluta o relativa
@@ -24,21 +24,6 @@ function turningPathAbs(direc) {
   else
     return 'La ruta ingresada no existe. Por favor ingresa una ruta válida.'
 };
-
-/*function readingPath(direc) {
-    if(validPath(direc)){ //si la ruta es válida
-        if(isFile(direc)){ //verificar si es File
-            if(extMd(direc)) // si la extensión es .md
-                return 'El archivo tiene extensión md' //imprimir que es md
-            else //es cualquier otro tipo de archivo
-                return 'El archivo no tiene extensión md' //imprimir que no es md
-        }
-        else
-        return readDir(direc); // leer carpeta, imprimir archivos
-        }
-    else //si la ruta no es válida
-        return 'La ruta ingresada no existe. Por favor ingresa una ruta válida.'
-};*/
 
 //consiguiendo array de archivos de una carpeta
 function getFiles(direc, arrFiles=[]){
@@ -116,16 +101,55 @@ function validLinks(arrmdLinks){ //debe recibir un array, llamar a la función c
                     arrmdLinks[i].ok = okValue
                 }
             }
-            resolve(arrmdLinks)
+            resolve(arrmdLinks) // se resuelve la promesa devolviendo arrmdLinks con status y ok
         })
     });
 };
 
-validLinks(getmdLinks(direc)).then(console.log).catch(console.error);
+//validLinks(getmdLinks(direc)).then(console.log).catch(console.error);
+const objetoPrueba =[{
+    href: 'https://es.wikipedia.org/wiki/Interstellar',
+    text: 'interestellar',
+    file: 'C:/Users/51940/Desktop/LABORATORIA/PROYECTO_4/DEV003-md-links/carpeta/ejemplo/txt-prueba.md',
+    status: 200,
+    ok: 'ok'
+  },
+  {
+    href: 'https://es.javascript.info/primise-basics',
+    text: 'Ejemplo',
+    file: 'C:/Users/51940/Desktop/LABORATORIA/PROYECTO_4/DEV003-md-links/carpeta/ejemplo/txt-prueba.md',
+    status: 404,
+    ok: 'fail'
+  },
+  {
+    href: 'https://es.wikipedia.org/wiki/Markdown',
+    text: 'Markdown',
+    file: 'C:/Users/51940/Desktop/LABORATORIA/PROYECTO_4/DEV003-md-links/carpeta/README.md',
+    status: 200,
+    ok: 'ok'
+  }];
+
+const totalLinks = (arrmdLinks) => {return 'Total: ' + arrmdLinks.length};
+//console.log(totalLinks(objetoPrueba));
+const brokenLinks = (arrmdLinks) => {
+    const brokenLinks = arrmdLinks.filter((arrmdLinks) => arrmdLinks.ok === 'fail');
+     return 'Broken: ' + brokenLinks.length;
+   };
+//console.log(brokenLinks(objetoPrueba));
+
+
 
  module.exports = {
     validPath,
     turningPathAbs,
-    //readingPath,
-    getLinks
+    isFile,
+    isDirectory,
+    extMd,
+    getFiles,
+    getmdFiles,
+    getLinks,
+    getOb,
+    getmdFiles,
+    getmdLinks,
+    validLinks
   };
