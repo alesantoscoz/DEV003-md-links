@@ -1,6 +1,6 @@
 const fs = require('fs'); //file system
 const path = require('path'); //dirección (ruta)
-const direc = './carpeta' ;// direccion de prueba
+const direc = 'C:/Users/51940/Desktop/LABORATORIA/PROYECTO_4/DEV003-md-links/carpeta' ;// direccion de prueba
 
 const validPath = (direc) => fs.existsSync(direc); //validar que la dirección existe
 const isAbs = (direc) => path.isAbsolute(direc);//validar si es absoluta o relativa
@@ -25,12 +25,11 @@ function turningPathAbs(direc) {
     return 'La ruta ingresada no existe. Por favor ingresa una ruta válida.'
 };
 
-function readingPath(direc) {
+/*function readingPath(direc) {
     if(validPath(direc)){ //si la ruta es válida
         if(isFile(direc)){ //verificar si es File
             if(extMd(direc)) // si la extensión es .md
                 return 'El archivo tiene extensión md' //imprimir que es md
-    
             else //es cualquier otro tipo de archivo
                 return 'El archivo no tiene extensión md' //imprimir que no es md
         }
@@ -39,7 +38,7 @@ function readingPath(direc) {
         }
     else //si la ruta no es válida
         return 'La ruta ingresada no existe. Por favor ingresa una ruta válida.'
-};
+};*/
 
 //consiguiendo array de archivos de una carpeta
 function getFiles(direc, arrFiles=[]){
@@ -65,20 +64,16 @@ function getmdFiles(arrFiles=[]){
 //función para generar array con links
 function getLinks(filePath){
     const regex = /\[(.+)\]\((https?:\/\/\w+.+)\)/g; //expresión regular para identificar páginas web (preguntar si está ok)
-    const links = (readingFile(filePath).match(regex)); //crea un array con los links del archivo después de leerlo
-    //match devuelve las coincidencias con la expresión regular (regex)
+    const links = (readingFile(filePath).match(regex)); //match devuelve las coincidencias con la expresión regular (regex)
     if(links!=null){ // sólo agregaremos los archivos que tengan links
         return links //crea un array con los links del archivo después de leerlo
     }
     return []
-    
 };
 
 //crear arreglo href text file
-function getOb(direc){
-    let arrObjetc=[];
+function getOb(direc, arrObjetc=[]){
     const arrLinks = getLinks(direc); //obtengo el array de links
-    //console.log(direc)
     for (let i = 0; i < arrLinks.length; i++){ //recorrer cada elemento para extraer href, text y file
         arrObjetc.push({
             href: arrLinks[i].slice(arrLinks[i].indexOf('](')+2, -1),
@@ -90,23 +85,47 @@ function getOb(direc){
 };
 
 // recursividad para obtener links de varios archivos
-function getmdLinks(direc){
-    let arrmdLinks =[];
+function getmdLinks(direc, arrmdLinks=[]){
     let arrmdFiles = getmdFiles(getFiles(direc)) // se obtiene el arreglo de archivos del folder y se filtran los .md
     for(let i = 0; i < arrmdFiles.length; i++){  // recorre cada uno de los archivos md del array
         arrmdLinks.push(...getOb(arrmdFiles[i])); // suma a un nuevo arreglo hrf, text, file
     }
-    return arrmdLinks
-}
+    return arrmdLinks;
+};
 
-console.log(getmdLinks(direc))
+//console.log(getmdLinks(direc))
 
 //creando función para validar links
+function validLinks(arrmdLinks){ //debe recibir un array, llamar a la función con getmdLinks
+    return new Promise((resolve) => {
+        const arrPromise = [];
+        arrmdLinks.forEach((object) => {
+            arrPromise.push(fetch(object.href)) // fetch trabaja con objetos, llamamos href (URL)
+        });
+        Promise.allSettled(arrPromise).then((result)=>{ //fetch devuelve una promesa por eso está asociado a un then
+            for (let i = 0; i < result.length; i++){ 
+                let okValue
+                if(result[i].status === 'fulfilled'){ //si encuentra el status
+                    result[i].value.ok ? okValue ='ok' : okValue ='fail'
+                    arrmdLinks[i].status = result[i].value.status // agregamos el valor del status
+                    arrmdLinks[i].ok = okValue // agregamos ok o fail según corresponda
+                }
+                else{ //en el caso de no encontrar status
+                    okValue = 'fail' //declaramos el valor de ok como fail
+                    arrmdLinks[i].status = 'ERROR' // podría ser redirección, connect timeout, entre otros
+                    arrmdLinks[i].ok = okValue
+                }
+            }
+            resolve(arrmdLinks)
+        })
+    });
+};
 
+validLinks(getmdLinks(direc)).then(console.log).catch(console.error);
 
  module.exports = {
     validPath,
     turningPathAbs,
-    readingPath,
+    //readingPath,
     getLinks
   };

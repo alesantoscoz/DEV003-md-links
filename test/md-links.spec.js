@@ -1,6 +1,6 @@
 const { mdLinks } = require('../index.js');
 
-const { turningPathAbs, validPath, readingPath, getLinks } = require('../api.js');
+const { turningPathAbs, validPath, getLinks } = require('../api.js');
 
 
 describe('mdLinks', () => {
@@ -27,11 +27,11 @@ describe('turningPathAbs', () => {
   });
 });
 
-describe('readingPath', () => {
+/*describe('readingPath', () => {
   it('Debería reconocer archivos .md', () => {
     expect(readingPath('./txt-texto.txt')).toBe('El archivo no tiene extensión md');
   });
-});
+});*/
 
 describe('getLinks', () => {
   it('Debería devolver un objeto', () => {
