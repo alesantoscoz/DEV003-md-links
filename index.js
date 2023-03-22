@@ -19,7 +19,7 @@ function mdLinks(path, options){
         const mdFiles = api.getmdFiles(api.getFiles(absolutePath))
         if(mdFiles.length !== 0){
          const validLinks = api.validLinks(api.getmdLinks(path));
-         resolve(validLinks)
+         resolve(validLinks)     
         }
         else if (mdFiles.length == 0){
         reject('No se encuentran archivos con extensión md')
