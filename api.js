@@ -130,12 +130,12 @@ const objetoPrueba =[{
   }];
 
 const totalLinks = (arrmdLinks) => {return 'Total: ' + arrmdLinks.length};
-console.log(totalLinks(objetoPrueba));
+//console.log(totalLinks(objetoPrueba));
 const brokenLinks = (arrmdLinks) => {
     const brokenLinks = arrmdLinks.filter((arrmdLinks) => arrmdLinks.ok === 'fail');
      return 'Broken: ' + brokenLinks.length;
    };
-console.log(brokenLinks(objetoPrueba));
+//console.log(brokenLinks(objetoPrueba));
 
 
 
