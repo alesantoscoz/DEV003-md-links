@@ -6,4 +6,4 @@ Hola, soy un archivo de texto de extensión md (:
 
 [Ejemplo](https://es.javascript.info/primise-basics)
 
-
+[Ejemplo repetido](https://es.javascript.info/primise-basics)

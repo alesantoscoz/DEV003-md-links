@@ -1,10 +1,18 @@
 const { mdLinks } = require('../index.js');
 
-const { turningPathAbs, 
-        validPath, 
-        getFiles,
-        totalLinks,
-        brokenLinks } = require('../api.js');
+const {     validPath,
+  turningPathAbs,
+  isFile,
+  isDirectory,
+  extMd,
+  getFiles,
+  getLinks,
+  getOb,
+  getmdFiles,
+  getmdLinks,
+  validLinks,
+  totalLinks,
+  brokenLinks } = require('../api.js');
 
 
 describe('mdLinks', () => {
@@ -15,21 +23,27 @@ describe('mdLinks', () => {
       expect(error).toBe('La ruta ingresada no existe');
     }
   });
+  it('Debería rechazar archivos sin extensión md', async () =>{
+    try {
+      return await mdLinks('./txt-texto.txt');
+    } catch (error) {
+      expect(error).toBe('No se encontraron archivos con extensión md');
+    }
+  });
 });
 
 describe('validPath', () => {
   it('Debería ser una función', () => {
     expect(typeof validPath).toBe('function');
   });
-  it('El valor de verdad', () => {
+  it('Debería devolver el valor de verdad', () => {
     expect(validPath('./')).toEqual(true);
   });
-
 });
 
-describe('turningPathAbs', () => {
-  it('Debería rechazar path invañido', () => {
-    expect(turningPathAbs('./estePathNoExiste.md')).toBe('La ruta ingresada no existe. Por favor ingresa una ruta válida.');
+describe('isFile', () => {
+  it('Debería devolver el valor de verdad', () => {
+    expect(isFile('./')).toEqual(false);
   });
 });
 

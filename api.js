@@ -1,6 +1,6 @@
 const fs = require('fs'); //file system
 const path = require('path'); //dirección (ruta)
-//const direc = './carpeta' ;// direccion de prueba
+//const direc = './carpeta/ejemplo/hola.md' ;// direccion de prueba
 
 const validPath = (direc) => fs.existsSync(direc); //validar que la dirección existe
 const isAbs = (direc) => path.isAbsolute(direc);//validar si es absoluta o relativa
@@ -13,34 +13,31 @@ const readingFile = (direc) => fs.readFileSync(direc, 'utf8'); // lectura de arc
 
 //Creando función para transformar ruta relativa
 function turningPathAbs(direc) {
-  if(validPath(direc)) { //si la ruta es válida
     if(!isAbs(direc)) { //si la ruta no es absoluta
       return turningAbs(direc); //convierte la ruta en absoluta
     }
     else { //si la ruta es absoluta
       return direc //retorna la ruta absoluta
     }
-  }
-  else
-    return 'La ruta ingresada no existe. Por favor ingresa una ruta válida.'
 };
 
 //consiguiendo array de archivos de una carpeta
 function getFiles(direc, arrFiles=[]){
-    if(isDirectory(direc)){ //si es folder
+    if(isDirectory(direc)){
         readDir(direc).forEach((file) => { 
             const folder = direc+'/'+file;
-            getFiles(folder, arrFiles); //recursividad, vuelvo a llamar a la función para que lea cada folder hasta un archivo
+            //recursividad, vuelvo a llamar a la función para que lea cada folder hasta llegar a un archivo
+            getFiles(folder, arrFiles); 
           });
     }
-    else { //si es un file se agrega al array
+    else {
         arrFiles.push(turningPathAbs(direc)); //se agrega directamente la ruta al array
         return arrFiles
     };
-    return arrFiles //devuelve el array con los archivos
+    return arrFiles
 };
 
-//filtrando array con sólo archivos md
+//filtrando archivos md
 function getmdFiles(arrFiles=[]){
     let arrmdFiles = arrFiles.filter((file=>extMd(file))); //filtra los archivos md del array con todos los archivos
     return arrmdFiles //devuelve array con archivos md
@@ -78,8 +75,6 @@ function getmdLinks(direc, arrmdLinks=[]){
     return arrmdLinks;
 };
 
-//console.log(getmdLinks(direc))
-
 //creando función para validar links
 function validLinks(arrmdLinks){ //debe recibir un array, llamar a la función con getmdLinks
     return new Promise((resolve) => {
@@ -106,38 +101,19 @@ function validLinks(arrmdLinks){ //debe recibir un array, llamar a la función c
     });
 };
 
-//validLinks(getmdLinks(direc)).then(console.log).catch(console.error);
-const objetoPrueba =[{
-    href: 'https://es.wikipedia.org/wiki/Interstellar',
-    text: 'interestellar',
-    file: 'C:/Users/51940/Desktop/LABORATORIA/PROYECTO_4/DEV003-md-links/carpeta/ejemplo/txt-prueba.md',
-    status: 200,
-    ok: 'ok'
-  },
-  {
-    href: 'https://es.javascript.info/primise-basics',
-    text: 'Ejemplo',
-    file: 'C:/Users/51940/Desktop/LABORATORIA/PROYECTO_4/DEV003-md-links/carpeta/ejemplo/txt-prueba.md',
-    status: 404,
-    ok: 'fail'
-  },
-  {
-    href: 'https://es.wikipedia.org/wiki/Markdown',
-    text: 'Markdown',
-    file: 'C:/Users/51940/Desktop/LABORATORIA/PROYECTO_4/DEV003-md-links/carpeta/README.md',
-    status: 200,
-    ok: 'ok'
-  }];
-
-const totalLinks = (arrmdLinks) => {return 'Total: ' + arrmdLinks.length};
-//console.log(totalLinks(objetoPrueba));
+//Función para devolver total de links
+const totalLinks = (arrmdLinks) => {return 'Total: ' + arrmdLinks.length}; 
+//Función para filtrar links rotos
 const brokenLinks = (arrmdLinks) => {
     const brokenLinks = arrmdLinks.filter((arrmdLinks) => arrmdLinks.ok === 'fail');
      return 'Broken: ' + brokenLinks.length;
    };
-//console.log(brokenLinks(objetoPrueba));
-
-
+//Función para devolver links únicos
+const uniqueLinks = (arrmdLinks) => {
+    const url = (arrmdLinks.map((arrmdLinks) => arrmdLinks.href)); // array con los links
+    const uniqueLinks = url.filter((link, index) => url.indexOf(link) === index); // filtra las url unicas
+    return 'Unique: ' + uniqueLinks.length;
+};
 
  module.exports = {
     validPath,
@@ -153,5 +129,6 @@ const brokenLinks = (arrmdLinks) => {
     getmdLinks,
     validLinks,
     totalLinks,
-    brokenLinks
+    brokenLinks,
+    uniqueLinks
   };
