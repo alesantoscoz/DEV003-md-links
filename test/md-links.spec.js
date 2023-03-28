@@ -1,7 +1,7 @@
 const { mdLinks } = require('../index.js');
 
-const {     validPath,
-  turningPathAbs,
+const {     
+  validPath,
   isFile,
   isDirectory,
   extMd,
@@ -9,27 +9,42 @@ const {     validPath,
   getLinks,
   getOb,
   getmdFiles,
-  getmdLinks,
-  validLinks,
   totalLinks,
-  brokenLinks } = require('../api.js');
+  brokenLinks, 
+  uniqueLinks} = require('../api.js');
 
 
 describe('mdLinks', () => {
+  it('Deberia ser una promesa', async () => {
+   try {
+    return await mdLinks()
+      .then(() => {
+        expect(mdLinks).toBe(typeof 'promise')
+      })} catch(error){
+      };
+  });
   it('Debería rechazar path inválido', async () =>{
     try {
-      return await mdLinks('./estePathNoExiste.md');
+      return await mdLinks('./estePathNoExiste.md',{validate : false});
     } catch (error) {
       expect(error).toBe('La ruta ingresada no existe');
     }
   });
   it('Debería rechazar archivos sin extensión md', async () =>{
     try {
-      return await mdLinks('./txt-texto.txt');
+      return await mdLinks('./txt-texto.txt',{validate : false});
     } catch (error) {
       expect(error).toBe('No se encontraron archivos con extensión md');
     }
   });
+  it('Debería indicar que no existen links', async () =>{
+    try {
+      return await mdLinks('./carpeta/ejemplo/txt-prueba.md',{validate : false});
+    } catch (error) {
+      expect(error).toBe('No existen links en el archivo');
+    }
+  });
+
 });
 
 describe('validPath', () => {
@@ -47,10 +62,42 @@ describe('isFile', () => {
   });
 });
 
+describe('getLinks',()=>{
+  it('Debería devolver un objeto',()=>{
+    expect(typeof getLinks('./README.md')).toBe('object')
+  })
+})
+
+describe('getOb',()=>{
+  it('Debería devolver un objeto',()=>{
+    expect(typeof getOb('./README.md')).toBe('object')
+  });
+});
+
+describe('getmdFiles',()=>{
+  it('Debería devolver un objeto',()=>{
+    expect(typeof getmdFiles([])).toBe('object')
+  });
+});
+
+describe('isDirectory', () => {
+  it('Debería devolver el valor de verdad', () => {
+    expect(isDirectory('./')).toEqual(true);
+  });
+  it('Debería ser un booleano',()=>{
+    expect(typeof isDirectory('./')).toBe('boolean');
+  });
+});
 
 describe('getFiles', () => {
   it('Debería devolver un objeto', () => {
     expect(typeof getFiles('./')).toBe('object');
+  });
+});
+
+describe('extMd',()=>{
+  it('Debería ser un booleano',()=>{
+    expect(typeof extMd('./README.md')).toBe('boolean');
   });
 });
 
@@ -87,3 +134,9 @@ describe('brokenLinks', () => {
     expect(brokenLinks(objetoPrueba)).toBe('Broken: 1');
   });
 });
+
+describe('uniqueLinks',()=>{
+  it('Debería devolver el número de links unicos',()=>{
+    expect(uniqueLinks(objetoPrueba)).toBe('Unique: 3')
+  })
+})

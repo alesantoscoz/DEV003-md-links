@@ -10,7 +10,7 @@
     "commit": "a63a770ea33332882790401851df337734b0b734"
   },
   "description": "Programa para validar links en archivos con extensión md",
-  "main": "index.js",
+  "main": "./cli.js",
   "directories": {
     "test": "test"
   },
@@ -28,6 +28,9 @@
   ],
   "author": "AleSantosCoz",
   "license": "ISC",
+  "bin":{
+    "md-links": "./cli.js"
+  },
   "bugs": {
     "url": "https://github.com/alesantoscoz/DEV003-md-links/issues"
   },

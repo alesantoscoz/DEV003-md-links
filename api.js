@@ -1,6 +1,5 @@
 const fs = require('fs'); //file system
 const path = require('path'); //dirección (ruta)
-//const direc = './carpeta/ejemplo/hola.md' ;// direccion de prueba
 
 const validPath = (direc) => fs.existsSync(direc); //validar que la dirección existe
 const isAbs = (direc) => path.isAbsolute(direc);//validar si es absoluta o relativa
