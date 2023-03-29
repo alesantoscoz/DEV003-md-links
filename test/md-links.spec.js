@@ -9,6 +9,7 @@ const {
   getLinks,
   getOb,
   getmdFiles,
+  validLinks,
   totalLinks,
   brokenLinks, 
   uniqueLinks} = require('../api.js');
@@ -16,13 +17,16 @@ const {
 
 describe('mdLinks', () => {
   it('Deberia ser una promesa', async () => {
-   try {
-    return await mdLinks()
-      .then(() => {
+   try { return await mdLinks().then(() => {
         expect(mdLinks).toBe(typeof 'promise')
       })} catch(error){
       };
   });
+/*  it('Debería devolver un objeto', async () => {
+    try{ return await mdLinks('./',{validate:true}).then(()=>{
+        expect(typeOf).toBe('object')
+    })} catch (error) {}
+  }); */
   it('Debería rechazar path inválido', async () =>{
     try {
       return await mdLinks('./estePathNoExiste.md',{validate : false});
@@ -44,7 +48,13 @@ describe('mdLinks', () => {
       expect(error).toBe('No existen links en el archivo');
     }
   });
-
+  it('Debería indicar que no existen links', async () =>{
+    try {
+      return await mdLinks('./carpeta/ejemplo/txt-prueba.md',{validate : true});
+    } catch (error) {
+      expect(error).toBe('No existen links en el archivo');
+    }
+  });
 });
 
 describe('validPath', () => {
@@ -63,9 +73,12 @@ describe('isFile', () => {
 });
 
 describe('getLinks',()=>{
-  it('Debería devolver un objeto',()=>{
+  it('Debería devolver un objeto',() => {
     expect(typeof getLinks('./README.md')).toBe('object')
-  })
+  });
+  it('Debería retornar un array vacío', () => {
+    expect(getLinks('./carpeta/soyuntexto.md')).toEqual([])
+  } )
 })
 
 describe('getOb',()=>{
@@ -78,6 +91,9 @@ describe('getmdFiles',()=>{
   it('Debería devolver un objeto',()=>{
     expect(typeof getmdFiles([])).toBe('object')
   });
+  it('Debería devolver un array vacío', ()=>{
+    expect(getmdFiles([])).toEqual([])
+  })
 });
 
 describe('isDirectory', () => {
@@ -98,6 +114,23 @@ describe('getFiles', () => {
 describe('extMd',()=>{
   it('Debería ser un booleano',()=>{
     expect(typeof extMd('./README.md')).toBe('boolean');
+  });
+});
+
+describe('validLinks',()=>{
+  it('Deberia ser una promesa', async () => {
+    try {
+     return await validLinks().then(() => {
+         expect(validLinks).toBe(typeof 'promise')
+       })} catch(error){
+       };
+   });
+  it('Debería devolver un objeto', async () =>{
+    try {
+      return await validLinks([]).then(()=>{
+        expect(typeOf).toBe('object')
+      })} catch (error){
+      };
   });
 });
 

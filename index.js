@@ -19,6 +19,7 @@ function mdLinks(path, options){
           return;
         }
         reject('No existen links en el archivo');
+        return;
       }); 
     }
     else if(!options.validate){
@@ -28,6 +29,7 @@ function mdLinks(path, options){
         return;
       };
       reject('No existen links en el archivo');
+      return;
     }
   });
 };
