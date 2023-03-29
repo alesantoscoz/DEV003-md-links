@@ -1,9 +1,9 @@
 Hola, soy un archivo de texto de extensión md (:
 
-[wiki](https://es.wikipedia.org/wiki/)
+[Enlace Wikipedia](https://es.wikipedia.org/wiki/)
 
-[interestellar](https://es.wikipedia.org/wiki/Interstellar)
+[Pelicula interestellar](https://es.wikipedia.org/wiki/Interstellar)
 
-[Ejemplo](https://es.javascript.info/primise-basics)
+[JavaScript](https://es.javascript.info/primise-basics)
 
-[Ejemplo repetido](https://es.javascript.info/primise-basics)
+[JavaScript duplicado](https://es.javascript.info/primise-basics)
